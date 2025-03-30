@@ -78,17 +78,28 @@ function loadHTML(selector, file, callback) {
     // Her kan du sende videre til Formspree
   }
 document.addEventListener("DOMContentLoaded", () => {
-  const cookieBanner = document.getElementById("cookie-banner");
+  const banner = document.getElementById("cookie-banner");
   const acceptBtn = document.getElementById("accept-cookies");
+  const rejectBtn = document.getElementById("reject-cookies");
 
-  if (!localStorage.getItem("cookiesAccepted")) {
-    cookieBanner.style.display = "flex";
+  // Hvis bruker allerede har valgt
+  const choice = localStorage.getItem("cookieConsent");
+  if (!choice) {
+    banner.style.display = "flex";
   }
 
   acceptBtn.addEventListener("click", () => {
-    localStorage.setItem("cookiesAccepted", "true");
-    cookieBanner.style.display = "none";
+    localStorage.setItem("cookieConsent", "accepted");
+    banner.style.display = "none";
+    // Initier kun ikke-nødvendige cookies/scripts her
+  });
+
+  rejectBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "rejected");
+    banner.style.display = "none";
+    // Ikke kjør analyse eller tredjepartsscripts
   });
 });
+
 
   
