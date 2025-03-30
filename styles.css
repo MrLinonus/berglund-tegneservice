@@ -296,19 +296,18 @@
   
   /* === PROJECTS === */
   .projects-preview {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    overflow-x: hidden;
-  }
-  
-  .projects-grid {
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    align-items: stretch;
-    overflow-x: hidden;
-  }
+  padding: 2rem 1rem;
+  margin: 0 auto;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 0; /* legg evt. til hvis ikke definert */
+}
   
   .project-card {
     padding: 0.5rem;
