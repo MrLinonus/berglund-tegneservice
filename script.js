@@ -83,70 +83,57 @@ function setupCookieBanner() {
 
   const acceptAll = document.getElementById("accept-all");
   const essentialOnly = document.getElementById("essential-only");
-  const customizeBtn = document.getElementById("customize-cookies");
-
-  const saveCustomBtn = document.getElementById("save-custom-cookies");
-  const closeModalBtn = document.getElementById("close-modal");
+  const customize = document.getElementById("customize-cookies");
 
   const analyticsCheckbox = document.getElementById("analytics-cookies");
   const marketingCheckbox = document.getElementById("marketing-cookies");
 
-  const storedConsent = localStorage.getItem("cookieConsent");
-  if (storedConsent) return; // Ikke vis på nytt
+  const saveCustom = document.getElementById("save-custom-cookies");
+  const closeModal = document.getElementById("close-modal");
 
-  banner.style.display = "flex";
+  const cookiePrefs = localStorage.getItem("cookieConsent");
+
+  if (!cookiePrefs) {
+    banner.style.display = "flex";
+  }
 
   // Godta alt
-  acceptAll?.addEventListener("click", () => {
+  acceptAll.addEventListener("click", () => {
     localStorage.setItem("cookieConsent", JSON.stringify({
-      necessary: true,
       analytics: true,
       marketing: true
     }));
-    banner.remove();
-    modal.remove();
+    banner.style.display = "none";
+    modal.style.display = "none";
   });
 
   // Kun nødvendige
-  essentialOnly?.addEventListener("click", () => {
+  essentialOnly.addEventListener("click", () => {
     localStorage.setItem("cookieConsent", JSON.stringify({
-      necessary: true,
       analytics: false,
       marketing: false
     }));
-    banner.remove();
-    modal.remove();
+    banner.style.display = "none";
+    modal.style.display = "none";
   });
 
-  // Åpne modal
-  customizeBtn?.addEventListener("click", () => {
+  // Vis tilpasningsmodal
+  customize.addEventListener("click", () => {
     modal.style.display = "flex";
   });
 
-  // Lukk modal
-  closeModalBtn?.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  // Lagre tilpassede valg
-  saveCustomBtn?.addEventListener("click", () => {
-    const consent = {
-      necessary: true,
+  // Lagre tilpasning
+  saveCustom.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", JSON.stringify({
       analytics: analyticsCheckbox.checked,
       marketing: marketingCheckbox.checked
-    };
-    localStorage.setItem("cookieConsent", JSON.stringify(consent));
+    }));
     modal.style.display = "none";
-    banner.remove();
+    banner.style.display = "none";
+  });
+
+  // Avbryt modal
+  closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
   });
 }
-const consent = JSON.parse(localStorage.getItem("cookieConsent") || "{}");
-
-if (consent.analytics) {
-  // Last inn Google Analytics f.eks.
-}
-
-if (consent.marketing) {
-  // Last inn Facebook Pixel
-}
-
