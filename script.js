@@ -140,3 +140,13 @@ function setupCookieBanner() {
     banner.remove();
   });
 }
+const consent = JSON.parse(localStorage.getItem("cookieConsent") || "{}");
+
+if (consent.analytics) {
+  // Last inn Google Analytics f.eks.
+}
+
+if (consent.marketing) {
+  // Last inn Facebook Pixel
+}
+
