@@ -77,4 +77,18 @@ function loadHTML(selector, file, callback) {
     alert("Takk! Forespørselen din er sendt.");
     // Her kan du sende videre til Formspree
   }
+document.addEventListener("DOMContentLoaded", () => {
+  const cookieBanner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("accept-cookies");
+
+  if (!localStorage.getItem("cookiesAccepted")) {
+    cookieBanner.style.display = "flex";
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookiesAccepted", "true");
+    cookieBanner.style.display = "none";
+  });
+});
+
   
