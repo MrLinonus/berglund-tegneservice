@@ -8,28 +8,8 @@ function loadHTML(selector, file, callback) {
     });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  // Header + burger-meny
-  loadHTML("#header", "partials/header.html", () => {
-    const menuToggle = document.getElementById("menu-toggle");
-    const navLinks = document.querySelector(".nav-links");
-
-    if (menuToggle && navLinks) {
-      menuToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("active");
-        const isOpen = navLinks.classList.contains("active");
-        menuToggle.textContent = isOpen ? "✕" : "☰";
-      });
-    }
-  });
-
-  // Footer
-  loadHTML("#footer", "partials/footer.html");
-
-  // Cookie-banner
-  loadHTML("#cookie", "partials/cookies.html", setupCookieBanner);
-
-  // Lightbox
+// === Lightbox-funksjon ===
+function setupLightbox() {
   document.querySelectorAll(".lightbox").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
@@ -53,17 +33,11 @@ window.addEventListener("DOMContentLoaded", () => {
       overlay.appendChild(img);
       document.body.appendChild(overlay);
 
-      overlay.addEventListener("click", (e) => {
+      overlay.addEventListener("click", e => {
         if (e.target === overlay) overlay.remove();
       });
     });
   });
-});
-
-// === Formspree fallback ===
-function handleSubmit(e) {
-  e.preventDefault();
-  alert("Takk! Forespørselen din er sendt.");
 }
 
 // === Cookie-banner logikk ===
@@ -82,73 +56,108 @@ function setupCookieBanner() {
   const closeModal = document.getElementById("close-modal");
 
   // Hvis allerede valgt – ikke vis igjen
-  const cookiePrefs = localStorage.getItem("cookieConsent");
-  if (!cookiePrefs && banner) {
+  const existing = localStorage.getItem("cookieConsent");
+  if (!existing && banner) {
     banner.style.display = "flex";
   }
 
-  const consent = JSON.parse(localStorage.getItem("cookieConsent"));
-  if (consent?.analytics) {
-    injectAnalytics();
-  }
-
+  // Håndter tidligere samtykke
+  try {
+    const consent = JSON.parse(existing);
+    if (consent?.analytics) injectAnalytics();
+    // ...legg evt. til flere scripts for "marketing"
+  } catch (e) {}
 
   // === Event handlers ===
-  if (acceptAll) {
-    acceptAll.addEventListener("click", () => {
-      localStorage.setItem("cookieConsent", JSON.stringify({
-        analytics: true,
-        marketing: true
-      }));
-      banner.style.display = "none";
-      modal.style.display = "none";
-    });
-  }
+  acceptAll?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", JSON.stringify({
+      analytics: true,
+      marketing: true
+    }));
+    banner.style.display = "none";
+    modal.style.display = "none";
+    injectAnalytics();
+  });
 
-  if (essentialOnly) {
-    essentialOnly.addEventListener("click", () => {
-      localStorage.setItem("cookieConsent", JSON.stringify({
-        analytics: false,
-        marketing: false
-      }));
-      banner.style.display = "none";
-      modal.style.display = "none";
-    });
-  }
+  essentialOnly?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", JSON.stringify({
+      analytics: false,
+      marketing: false
+    }));
+    banner.style.display = "none";
+    modal.style.display = "none";
+  });
 
-  if (customize) {
-    customize.addEventListener("click", () => {
-      modal.style.display = "flex";
-    });
-  }
+  customize?.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
 
-  if (saveCustom) {
-    saveCustom.addEventListener("click", () => {
-      const consent = {
-        analytics: analyticsCheckbox?.checked || false,
-        marketing: marketingCheckbox?.checked || false
-      };
-      localStorage.setItem("cookieConsent", JSON.stringify(consent));
-      modal.style.display = "none";
-      banner.style.display = "none";
-    });
-  }
+  saveCustom?.addEventListener("click", () => {
+    const consent = {
+      analytics: analyticsCheckbox?.checked || false,
+      marketing: marketingCheckbox?.checked || false
+    };
+    localStorage.setItem("cookieConsent", JSON.stringify(consent));
+    modal.style.display = "none";
+    banner.style.display = "none";
+    if (consent.analytics) injectAnalytics();
+  });
 
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-  }
+  closeModal?.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
 }
+
+// === Inject Google Analytics ===
 function injectAnalytics() {
+  if (document.getElementById("ga-script")) return;
   const script = document.createElement("script");
-  script.src = "https://www.googletagmanager.com/gtag/js?id=GA-ID";
+  script.id = "ga-script";
+  script.src = "https://www.googletagmanager.com/gtag/js?id=GA-ID"; // ← erstatt GA-ID
   script.async = true;
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'GA-ID');
+  gtag('config', 'GA-ID'); // ← erstatt GA-ID
 }
 
+// === Form fallback (kan brukes i forms) ===
+function handleSubmit(e) {
+  e.preventDefault();
+  alert("Takk! Forespørselen din er sendt.");
+}
+
+// === INIT ===
+window.addEventListener("DOMContentLoaded", () => {
+  // Header
+  loadHTML("#header", "partials/header.html", () => {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        menuToggle.textContent = navLinks.classList.contains("active") ? "✕" : "☰";
+      });
+    }
+  });
+
+  // Footer
+  loadHTML("#footer", "partials/footer.html");
+
+  // Cookie banner – kun hvis det ikke er samtykket
+  const consent = localStorage.getItem("cookieConsent");
+  if (!consent) {
+    loadHTML("#cookie", "partials/cookies.html", setupCookieBanner);
+  } else {
+    try {
+      const parsed = JSON.parse(consent);
+      if (parsed?.analytics) injectAnalytics();
+    } catch (e) {}
+  }
+
+  // Lightbox
+  setupLightbox();
+});
