@@ -14,16 +14,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menu-toggle");
     const navLinks = document.querySelector(".nav-links");
 
-    if (!menuToggle || !navLinks) {
-      console.error("Menu toggle or nav links not found");
-      return;
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        const isOpen = navLinks.classList.contains("active");
+        menuToggle.textContent = isOpen ? "✕" : "☰";
+      });
     }
-
-    menuToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-      const isOpen = navLinks.classList.contains("active");
-      menuToggle.textContent = isOpen ? "✕" : "☰";
-    });
   });
 
   // Footer
@@ -32,16 +29,12 @@ window.addEventListener("DOMContentLoaded", () => {
   // Cookie-banner
   loadHTML("#cookie", "partials/cookies.html", setupCookieBanner);
 
-  // Lightbox-funksjon
+  // Lightbox
   document.querySelectorAll(".lightbox").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
-
       const href = link.getAttribute("href");
-      if (!href) {
-        console.error("Invalid link href");
-        return;
-      }
+      if (!href) return;
 
       const overlay = document.createElement("div");
       overlay.classList.add("lightbox-overlay");
@@ -61,19 +54,16 @@ window.addEventListener("DOMContentLoaded", () => {
       document.body.appendChild(overlay);
 
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-          overlay.remove();
-        }
+        if (e.target === overlay) overlay.remove();
       });
     });
   });
 });
 
-// === Fallback hvis Formspree feiler ===
+// === Formspree fallback ===
 function handleSubmit(e) {
   e.preventDefault();
   alert("Takk! Forespørselen din er sendt.");
-  // Her kan du evt. sende med fetch til Formspree
 }
 
 // === Cookie-banner logikk ===
@@ -91,49 +81,56 @@ function setupCookieBanner() {
   const saveCustom = document.getElementById("save-custom-cookies");
   const closeModal = document.getElementById("close-modal");
 
+  // Hvis allerede valgt – ikke vis igjen
   const cookiePrefs = localStorage.getItem("cookieConsent");
-
-  if (!cookiePrefs) {
+  if (!cookiePrefs && banner) {
     banner.style.display = "flex";
   }
 
-  // Godta alt
-  acceptAll.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", JSON.stringify({
-      analytics: true,
-      marketing: true
-    }));
-    banner.style.display = "none";
-    modal.style.display = "none";
-  });
+  // === Event handlers ===
+  if (acceptAll) {
+    acceptAll.addEventListener("click", () => {
+      localStorage.setItem("cookieConsent", JSON.stringify({
+        analytics: true,
+        marketing: true
+      }));
+      banner.style.display = "none";
+      modal.style.display = "none";
+    });
+  }
 
-  // Kun nødvendige
-  essentialOnly.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", JSON.stringify({
-      analytics: false,
-      marketing: false
-    }));
-    banner.style.display = "none";
-    modal.style.display = "none";
-  });
+  if (essentialOnly) {
+    essentialOnly.addEventListener("click", () => {
+      localStorage.setItem("cookieConsent", JSON.stringify({
+        analytics: false,
+        marketing: false
+      }));
+      banner.style.display = "none";
+      modal.style.display = "none";
+    });
+  }
 
-  // Vis tilpasningsmodal
-  customize.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
+  if (customize) {
+    customize.addEventListener("click", () => {
+      modal.style.display = "flex";
+    });
+  }
 
-  // Lagre tilpasning
-  saveCustom.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", JSON.stringify({
-      analytics: analyticsCheckbox.checked,
-      marketing: marketingCheckbox.checked
-    }));
-    modal.style.display = "none";
-    banner.style.display = "none";
-  });
+  if (saveCustom) {
+    saveCustom.addEventListener("click", () => {
+      const consent = {
+        analytics: analyticsCheckbox?.checked || false,
+        marketing: marketingCheckbox?.checked || false
+      };
+      localStorage.setItem("cookieConsent", JSON.stringify(consent));
+      modal.style.display = "none";
+      banner.style.display = "none";
+    });
+  }
 
-  // Avbryt modal
-  closeModal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
+  if (closeModal) {
+    closeModal.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
 }
