@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berglund Tegneservice</title>
+  <link rel="stylesheet" href="styles.css"> <!-- denne var det som manglet! -->
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="application-page">
+    <h2>Bestill tegneoppdrag</h2>
+    <p>Beskriv prosjektet ditt og legg ved filer – så kommer jeg tilbake til deg med et uforpliktende tilbud.</p>
+
+    <form 
+      action="https://formspree.io/f/xrbpalwl" 
+      method="POST" 
+      enctype="multipart/form-data">
+
+     <div class="form-group checkbox-group">
+    <label>Hva trenger du hjelp med?</label>
+  
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Fasadetegning" />
+      <span>Prosjektering og arbeidstegninger</span>
+    </div>
+  
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Full byggesøknad" />
+      <span>Tegninger til byggesøknad</span>
+    </div>
+  
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Annet" />
+      <span>Produkt design</span>
+    </div>
+
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Annet" />
+      <span>Design for produksjon (DFM)</span>
+    </div>
+
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Annet" />
+      <span>Konseptillustrasjoner</span>
+    </div>
+
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Annet" />
+      <span>Grafisk design</span>
+    </div>
+
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Annet" />
+      <span>Visualisering</span>
+    </div>
+
+    <div class="checkbox-option">
+      <input type="checkbox" name="pakker" value="Annet" />
+      <span>Annet / tilpasset oppdrag</span>
+    </div>
+
+    <a href="priser.html" class="pris-knapp">Se prisliste</a>
+
+
+  </div>
+  
+
+  
+      <div class="form-group">
+        <label for="name">Fornavn</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="name">Etternavn</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Telefon</label>
+        <input type="tel" id="phone" name="phone" />
+      </div>
+      <div class="form-group">
+        <label for="resume">Last opp skisser eller andre filer (valgfritt)</label>
+        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" />
+      </div>
+      <div class="form-group">
+        <label for="cover-letter">Beskrivelse av oppdraget</label>
+        <textarea id="cover-letter" name="cover-letter" rows="5"></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send forespørsel</button>
+    </form>
+  </main>
+  
+
+  <div id="footer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
