@@ -28,7 +28,9 @@ function loadHTML(selector, file, callback) {
   
     // Last inn footer
     loadHTML("#footer", "partials/footer.html");
-  
+
+    loadHTML("#cookie", "partials/cookies.html", setupCookieBanner);
+
     // Lightbox-funksjon
     document.querySelectorAll(".lightbox").forEach(link => {
       link.addEventListener("click", e => {
