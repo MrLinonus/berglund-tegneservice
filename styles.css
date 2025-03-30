@@ -342,6 +342,13 @@
     color: #444;
     font-size: 0.95rem;
   }
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
   
   /* === LIGHTBOX === */
   .lightbox-overlay {
