@@ -101,5 +101,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+window.addEventListener("load", () => {
+  const banner = document.getElementById("cookie-banner");
+  const acceptBtn = document.getElementById("accept-cookies");
+  const rejectBtn = document.getElementById("reject-cookies");
+
+  // Vis bare hvis bruker ikke har valgt
+  if (!localStorage.getItem("cookieConsent")) {
+    banner.style.display = "flex";
+  }
+
+  // Godta
+  acceptBtn?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    banner.style.display = "none";
+    // Her kan du aktivere tredjeparts cookies om ønskelig
+  });
+
+  // Avslå
+  rejectBtn?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "rejected");
+    banner.style.display = "none";
+  });
+});
 
   
