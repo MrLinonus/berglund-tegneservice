@@ -79,23 +79,64 @@ function handleSubmit(e) {
 // === Cookie-banner logikk ===
 function setupCookieBanner() {
   const banner = document.getElementById("cookie-banner");
-  const acceptBtn = document.getElementById("accept-cookies");
-  const rejectBtn = document.getElementById("reject-cookies");
+  const modal = document.getElementById("cookie-modal");
 
-  if (!banner || localStorage.getItem("cookieConsent")) return;
+  const acceptAll = document.getElementById("accept-all");
+  const essentialOnly = document.getElementById("essential-only");
+  const customizeBtn = document.getElementById("customize-cookies");
+
+  const saveCustomBtn = document.getElementById("save-custom-cookies");
+  const closeModalBtn = document.getElementById("close-modal");
+
+  const analyticsCheckbox = document.getElementById("analytics-cookies");
+  const marketingCheckbox = document.getElementById("marketing-cookies");
+
+  const storedConsent = localStorage.getItem("cookieConsent");
+  if (storedConsent) return; // Ikke vis på nytt
 
   banner.style.display = "flex";
 
-  acceptBtn?.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", "accepted");
-    banner.style.display = "none";
-
-    // Eksempel: Aktiver Google Analytics her hvis ønskelig
-    // loadGoogleAnalytics();
+  // Godta alt
+  acceptAll?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", JSON.stringify({
+      necessary: true,
+      analytics: true,
+      marketing: true
+    }));
+    banner.remove();
+    modal.remove();
   });
 
-  rejectBtn?.addEventListener("click", () => {
-    localStorage.setItem("cookieConsent", "rejected");
-    banner.style.display = "none";
+  // Kun nødvendige
+  essentialOnly?.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", JSON.stringify({
+      necessary: true,
+      analytics: false,
+      marketing: false
+    }));
+    banner.remove();
+    modal.remove();
+  });
+
+  // Åpne modal
+  customizeBtn?.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  // Lukk modal
+  closeModalBtn?.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Lagre tilpassede valg
+  saveCustomBtn?.addEventListener("click", () => {
+    const consent = {
+      necessary: true,
+      analytics: analyticsCheckbox.checked,
+      marketing: marketingCheckbox.checked
+    };
+    localStorage.setItem("cookieConsent", JSON.stringify(consent));
+    modal.style.display = "none";
+    banner.remove();
   });
 }
