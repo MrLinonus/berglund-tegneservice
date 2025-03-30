@@ -514,5 +514,13 @@ img, video, iframe {
 body {
   overflow-x: hidden;
 }
+.profile-image {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem auto;
+  display: block;
+}
 
 
