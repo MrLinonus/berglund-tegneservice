@@ -329,6 +329,7 @@
     width: 100%;
     height: auto;
     display: block;
+    object-fit: contain;
   }
   
   .project-card h3 {
