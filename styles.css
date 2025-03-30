@@ -372,36 +372,36 @@
   }
   /* === COOKIE BANNER === */
   .cookie-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    color: #000;
-    padding: 1rem;
-    border-top: 1px solid #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    z-index: 9999;
-    font-size: 0.9rem;
-  }
-  
-  .cookie-banner p {
-    margin: 0;
-  }
-  
-  .cookie-banner button {
-    background-color: #a6d9bf;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .cookie-banner button:hover {
-    background-color: #90c7ad;
-  }
-  
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  color: #000;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  z-index: 9999;
+  font-size: 0.9rem;
+}
+
+.cookie-banner p {
+  margin: 0;
+}
+
+.cookie-banner button {
+  background-color: #a6d9bf;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cookie-banner button:hover {
+  background-color: #90c7ad;
+}
+
