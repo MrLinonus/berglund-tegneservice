@@ -1,0 +1,26 @@
+<div class="cookie-banner" id="cookie-banner">
+  <div class="cookie-text">
+    <p>
+      Vi bruker cookies for å forbedre nettstedet og tilby relevante funksjoner.
+      Du kan velge hvilke cookies vi får bruke. Les mer i <a href="policy.html">personvernerklæringen</a>.
+    </p>
+  </div>
+  <div class="cookie-actions">
+    <button id="accept-all">Godta alle</button>
+    <button id="essential-only">Kun nødvendige</button>
+    <button id="customize-cookies">Tilpass</button>
+  </div>
+</div>
+
+<!-- Modal for tilpassede valg -->
+<div class="cookie-modal" id="cookie-modal">
+  <div class="cookie-modal-content">
+    <h3>Innstillinger for informasjonskapsler</h3>
+    <label><input type="checkbox" id="analytics-cookies" checked> Analyse (f.eks. Google Analytics)</label>
+    <label><input type="checkbox" id="marketing-cookies"> Markedsføring (f.eks. Facebook Pixel)</label>
+    <div class="modal-actions">
+      <button id="save-custom-cookies">Lagre valg</button>
+      <button id="close-modal">Avbryt</button>
+    </div>
+  </div>
+</div>
